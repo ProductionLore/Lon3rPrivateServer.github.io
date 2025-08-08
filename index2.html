@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<link rel="icon" href="images/Family.png" type="image/png" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Lon3r — Вход</title>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0a0a0c;
+    --panel: #0f1113;
+    --muted: #9aa3ad;
+    --accent: #e2b84a;
+    --glass: rgba(255,255,255,0.02);
+    --max-w: 480px;
+  }
+  * {box-sizing: border-box;}
+  body {
+    margin: 0;
+    background: var(--bg);
+    font-family: 'Montserrat', sans-serif;
+    color: #e6eef6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 40px 20px;
+  }
+  .container {
+    width: 100%;
+    max-width: var(--max-w);
+    background: var(--panel);
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.65);
+  }
+  h2 {
+    font-weight: 900;
+    margin-bottom: 24px;
+    color: var(--accent);
+    text-align: center;
+  }
+  label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  input[type="text"], input[type="password"] {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.1);
+    background: transparent;
+    color: #e6eef6;
+    font-size: 16px;
+  }
+  input[type="text"]:focus, input[type="password"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 8px var(--accent);
+  }
+  button {
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    background: var(--accent);
+    color: #07070a;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  button:hover:not(:disabled) {
+    background: #d1a83d;
+  }
+  button:disabled {
+    background: rgba(226,184,74,0.5);
+    cursor: default;
+  }
+  .error {
+    color: #f44336;
+    margin-bottom: 12px;
+    font-weight: 700;
+  }
+  .profile {
+    text-align: center;
+  }
+  .avatar {
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    background: var(--glass);
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid var(--accent);
+    position: relative;
+  }
+  .avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  .avatar input[type="file"] {
+    display: none;
+  }
+  .profile-info {
+    margin-bottom: 18px;
+  }
+  .profile-info label {
+    text-align: left;
+    display: block;
+    margin: 12px 0 6px;
+  }
+  .logout-btn {
+    margin-top: 20px;
+    background: #f44336;
+    color: #fff;
+  }
+  /* Вкладки */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 24px;
+    justify-content: center;
+  }
+  .tab {
+    padding: 10px 18px;
+    border-radius: 8px;
+    background: rgba(226,184,74,0.2);
+    color: var(--muted);
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.3s, color 0.3s;
+  }
+  .tab.active {
+    background: var(--accent);
+    color: #07070a;
+  }
+  .tab-content {
+    display: none;
+  }
+  .tab-content.active {
+    display: block;
+  }
+  /* Загрузка */
+  .loading-image {
+    width: 100%;
+    height: 180px;
+ 	background: url('images/Load.png') center/cover no-repeat;
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+  .progress-container {
+    background: rgba(255,255,255,0.1);
+    border-radius: 12px;
+    overflow: hidden;
+    height: 28px;
+    margin-bottom: 12px;
+  }
+  .progress-bar {
+    height: 100%;
+    background: var(--accent);
+    width: 0%;
+    transition: width 0.3s ease;
+  }
+  .loading-msg {
+    font-size: 14px;
+    font-weight: 700;
+    color: var(--accent);
+    height: 24px;
+    margin-bottom: 20px;
+    min-height: 24px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="container" id="app">
+
+  <!-- Вкладки -->
+  <div class="tabs">
+    <div class="tab active" data-tab="login">Вход</div>
+    <div class="tab" data-tab="profile" style="display:none;">Профиль</div>
+    <div class="tab" data-tab="loading" style="display:none;">Загрузка</div>
+  </div>
+
+  <!-- Вкладка Вход -->
+  <div id="login" class="tab-content active">
+    <h2>Вход в аккаунт</h2>
+    <div class="error" id="error-msg" style="display:none;"></div>
+    <label for="login-input">Логин</label>
+    <input type="text" id="login-input" autocomplete="off" />
+    <label for="password-input">Пароль</label>
+    <input type="password" id="password-input" autocomplete="off" />
+    <button id="login-btn">Войти</button>
+  </div>
+
+  <!-- Вкладка Профиль -->
+  <div id="profile" class="tab-content">
+    <h2>Личный профиль</h2>
+    <div class="avatar" title="Нажми, чтобы сменить аватар">
+      <img src="" alt="Аватар" id="avatar-img" />
+      <input type="file" id="avatar-input" accept="image/*" />
+    </div>
+
+    <div class="profile-info">
+      <label for="nickname-input">Никнейм</label>
+      <input type="text" id="nickname-input" />
+    </div>
+
+    <div class="profile-info">
+      <label for="new-password-input">Новый пароль</label>
+      <input type="password" id="new-password-input" placeholder="Оставь пустым, если не менять" />
+    </div>
+
+    <button id="save-btn">Сохранить изменения</button>
+    <button class="logout-btn" id="logout-btn">Выйти</button>
+  </div>
+
+  <!-- Вкладка Загрузка -->
+  <div id="loading" class="tab-content">
+    <h2>Lon3r Private Server</h2>
+    <div class="loading-image"></div>
+    <button id="start-download-btn">Загрузить</button>
+    <div class="progress-container" style="margin-top: 20px;">
+      <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    <div class="loading-msg" id="loading-msg"></div>
+  </div>
+
+</div>
+
+<script>
+  // Аккаунты (фикс)
+  const users = {
+    "Lon3r": { password: "Lon3rPS", nickname: "Lon3r", avatar: "" },
+    "Shadow": { password: "Shadow123", nickname: "Shadow", avatar: "" },
+    "Viper": { password: "Viper007", nickname: "Viper", avatar: "" },
+  };
+
+  // Элементы
+  const tabs = document.querySelectorAll(".tab");
+  const tabContents = document.querySelectorAll(".tab-content");
+  const loginTab = document.getElementById("login");
+  const profileTab = document.getElementById("profile");
+  const loadingTab = document.getElementById("loading");
+
+  const loginInput = document.getElementById("login-input");
+  const passwordInput = document.getElementById("password-input");
+  const loginBtn = document.getElementById("login-btn");
+  const errorMsg = document.getElementById("error-msg");
+
+  const avatarImg = document.getElementById("avatar-img");
+  const avatarInput = document.getElementById("avatar-input");
+  const nicknameInput = document.getElementById("nickname-input");
+  const newPasswordInput = document.getElementById("new-password-input");
+  const saveBtn = document.getElementById("save-btn");
+  const logoutBtn = document.getElementById("logout-btn");
+
+  const startDownloadBtn = document.getElementById("start-download-btn");
+  const progressBar = document.getElementById("progress-bar");
+  const loadingMsg = document.getElementById("loading-msg");
+
+  let currentUser = null;
+
+  // Скрываем вкладки "Профиль" и "Загрузка" если не залогинен
+  function updateTabsVisibility(loggedIn) {
+    const profileTabBtn = document.querySelector('.tab[data-tab="profile"]');
+    const loadingTabBtn = document.querySelector('.tab[data-tab="loading"]');
+
+    if (loggedIn) {
+      profileTabBtn.style.display = "inline-flex";
+      loadingTabBtn.style.display = "inline-flex";
+    } else {
+      profileTabBtn.style.display = "none";
+      loadingTabBtn.style.display = "none";
+
+      // Переключаемся на вход
+      tabs.forEach(t => t.classList.remove("active"));
+      document.querySelector(`.tab[data-tab="login"]`).classList.add("active");
+      tabContents.forEach(tc => {
+        if(tc.id === "login") {
+          tc.classList.add("active");
+        } else {
+          tc.classList.remove("active");
+        }
+      });
+    }
+  }
+
+  // Вкладки переключение
+  tabs.forEach(tab => {
+    tab.addEventListener("click", () => {
+      // Если не залогинен и пытаемся открыть не вход — блокируем
+      if (!currentUser && tab.dataset.tab !== "login") return;
+
+      tabs.forEach(t => t.classList.remove("active"));
+      tab.classList.add("active");
+      const target = tab.dataset.tab;
+      tabContents.forEach(tc => {
+        if(tc.id === target) {
+          tc.classList.add("active");
+        } else {
+          tc.classList.remove("active");
+        }
+      });
+    });
+  });
+
+  // Загрузка данных пользователей из localStorage
+  function loadUsersData() {
+    const data = localStorage.getItem("usersData");
+    if (data) {
+      const parsed = JSON.parse(data);
+      for (const key in parsed) {
+        if (users[key]) {
+          users[key] = parsed[key];
+        }
+      }
+    }
+  }
+
+  // Сохраняем данные пользователя в localStorage
+  function saveUserData() {
+    if (!currentUser) return;
+    users[currentUser].nickname = nicknameInput.value.trim() || currentUser;
+    if (newPasswordInput.value.trim()) {
+      users[currentUser].password = newPasswordInput.value.trim();
+      alert("Пароль изменён!");
+      newPasswordInput.value = "";
+    }
+    localStorage.setItem("usersData", JSON.stringify(users));
+    localStorage.setItem("currentUser", currentUser);
+    alert("Данные сохранены!");
+    renderProfile();
+  }
+
+  // Отрисовка профиля
+  function renderProfile() {
+    if (!currentUser) return;
+    const user = users[currentUser];
+    avatarImg.src = user.avatar || `https://i.pravatar.cc/120?u=${currentUser}`;
+    nicknameInput.value = user.nickname || currentUser;
+  }
+
+  // Вход
+  loginBtn.addEventListener("click", () => {
+    const login = loginInput.value.trim();
+    const password = passwordInput.value.trim();
+    if (!login || !password) {
+      errorMsg.style.display = "block";
+      errorMsg.textContent = "Введите логин и пароль";
+      return;
+    }
+    if (!users[login] || users[login].password !== password) {
+      errorMsg.style.display = "block";
+      errorMsg.textContent = "Неверный логин или пароль";
+      return;
+    }
+    errorMsg.style.display = "none";
+    currentUser = login;
+    localStorage.setItem("currentUser", currentUser);
+    loginInput.value = "";
+    passwordInput.value = "";
+
+    updateTabsVisibility(true);
+
+    // Переключаемся на профиль
+    tabs.forEach(t => t.classList.remove("active"));
+    document.querySelector(`.tab[data-tab="profile"]`).classList.add("active");
+    tabContents.forEach(tc => tc.classList.remove("active"));
+    profileTab.classList.add("active");
+    renderProfile();
+  });
+
+  // Лоад данных при загрузке
+  window.addEventListener("load", () => {
+    loadUsersData();
+    const savedUser = localStorage.getItem("currentUser");
+    if (savedUser && users[savedUser]) {
+      currentUser = savedUser;
+      updateTabsVisibility(true);
+      tabs.forEach(t => t.classList.remove("active"));
+      document.querySelector(`.tab[data-tab="profile"]`).classList.add("active");
+      tabContents.forEach(tc => tc.classList.remove("active"));
+      profileTab.classList.add("active");
+      renderProfile();
+    } else {
+      updateTabsVisibility(false);
+    }
+  });
+
+  // Смена аватара
+  avatarImg.addEventListener("click", () => {
+    avatarInput.click();
+  });
+  avatarInput.addEventListener("change", () => {
+    const file = avatarInput.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      users[currentUser].avatar = e.target.result;
+      avatarImg.src = e.target.result;
+      saveUserData();
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // Сохранить профиль
+  saveBtn.addEventListener("click", () => {
+    saveUserData();
+  });
+
+  // Выйти
+  logoutBtn.addEventListener("click", () => {
+    localStorage.removeItem("currentUser");
+    currentUser = null;
+    updateTabsVisibility(false);
+    errorMsg.style.display = "none";
+  });
+
+  // --- Загрузка ---
+
+  const facts = [
+    "Знаешь ли ты, что в Lon3r Private Server можно создавать свой мерч?",
+    "Интересно, что некоторые админы в Lon3r Private Server страдают хуйнёй.",
+    "В Lon3r Private Server есть уникальные кастомные машины.",
+    "Пиздатый Античит только у нас:)",
+    "Админки защищены от хакеров и всегда на страже порядка.",
+    "В Lon3r используются новейшие технологии для стабильности.",
+    "Пинг минимален, лагов почти нет — игра как по маслу.",
+    "В Lon3r иногда проходят онлайн встречи игроков для обсуждений.",
+    "Есть внутриигровые ивенты с крутыми призами.",
+    "Ребята постоянно обновляют контент, держат сервер живым."
+  ];
+
+  let loadingInterval = null;
+  let messageInterval = null;
+  let downloadStart = null;
+  let downloadDuration = null;
+
+  startDownloadBtn.addEventListener("click", () => {
+    if (loadingInterval) return;
+
+    downloadDuration = (4 + Math.random() * 4) * 3600 * 1000;
+    downloadStart = Date.now();
+
+    progressBar.style.width = "0%";
+    loadingMsg.textContent = "Начинаем загрузку...";
+    startDownloadBtn.disabled = true;
+
+    loadingInterval = setInterval(() => {
+      const elapsed = Date.now() - downloadStart;
+      let progress = Math.min(elapsed / downloadDuration, 1);
+      progressBar.style.width = (progress * 100).toFixed(2) + "%";
+
+      if (progress >= 1) {
+        loadingMsg.textContent = "Загрузка завершена! Можно запускать сервер.";
+        clearInterval(loadingInterval);
+        clearInterval(messageInterval);
+        loadingInterval = null;
+        startDownloadBtn.disabled = false;
+      }
+    }, 1000);
+
+    let lastFactIndex = -1;
+    messageInterval = setInterval(() => {
+      let idx;
+      do {
+        idx = Math.floor(Math.random() * facts.length);
+      } while (idx === lastFactIndex);
+      lastFactIndex = idx;
+      loadingMsg.textContent = facts[idx];
+    }, 30000);
+  });
+
+</script>
+
+</body>
+</html>
