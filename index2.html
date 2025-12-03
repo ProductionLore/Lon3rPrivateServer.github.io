@@ -1,258 +1,931 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<link rel="icon" href="images/Family.png" type="image/png" />
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>Lon3r — Вход</title>
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet" />
-<style>
-  :root {
-    --bg: #0a0a0c;
-    --panel: #0f1113;
-    --muted: #9aa3ad;
-    --accent: #e2b84a;
-    --glass: rgba(255,255,255,0.02);
-    --max-w: 480px;
-  }
-  * {box-sizing: border-box;}
-  body {
-    margin: 0;
-    background: var(--bg);
-    font-family: 'Montserrat', sans-serif;
-    color: #e6eef6;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    padding: 40px 20px;
-  }
-  .container {
-    width: 100%;
-    max-width: var(--max-w);
-    background: var(--panel);
-    border-radius: 14px;
-    padding: 24px;
-    box-shadow: 0 8px 30px rgba(0,0,0,0.65);
-  }
-  h2 {
-    font-weight: 900;
-    margin-bottom: 24px;
-    color: var(--accent);
-    text-align: center;
-  }
-  label {
-    display: block;
-    margin-bottom: 6px;
-    font-weight: 700;
-    font-size: 14px;
-    color: var(--muted);
-  }
-  input[type="text"], input[type="password"] {
-    width: 100%;
-    padding: 10px 14px;
-    border-radius: 8px;
-    border: 1px solid rgba(255,255,255,0.1);
-    background: transparent;
-    color: #e6eef6;
-    font-size: 16px;
-  }
-  input[type="text"]:focus, input[type="password"]:focus {
-    outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 8px var(--accent);
-  }
-  button {
-    padding: 12px;
-    border-radius: 8px;
-    border: none;
-    background: var(--accent);
-    color: #07070a;
-    font-weight: 700;
-    font-size: 16px;
-    cursor: pointer;
-    transition: background 0.3s;
-  }
-  button:hover:not(:disabled) {
-    background: #d1a83d;
-  }
-  button:disabled {
-    background: rgba(226,184,74,0.5);
-    cursor: default;
-  }
-  .error {
-    color: #f44336;
-    margin-bottom: 12px;
-    font-weight: 700;
-  }
-  .profile {
-    text-align: center;
-  }
-  .avatar {
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 18px;
-    border-radius: 50%;
-    background: var(--glass);
-    overflow: hidden;
-    cursor: pointer;
-    border: 2px solid var(--accent);
-    position: relative;
-  }
-  .avatar img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-  .avatar input[type="file"] {
-    display: none;
-  }
-  .profile-info {
-    margin-bottom: 18px;
-  }
-  .profile-info label {
-    text-align: left;
-    display: block;
-    margin: 12px 0 6px;
-  }
-  .logout-btn {
-    margin-top: 20px;
-    background: #f44336;
-    color: #fff;
-  }
-  /* Вкладки */
-  .tabs {
-    display: flex;
-    gap: 8px;
-    margin-bottom: 24px;
-    justify-content: center;
-  }
-  .tab {
-    padding: 10px 18px;
-    border-radius: 8px;
-    background: rgba(226,184,74,0.2);
-    color: var(--muted);
-    font-weight: 700;
-    cursor: pointer;
-    user-select: none;
-    transition: background 0.3s, color 0.3s;
-  }
-  .tab.active {
-    background: var(--accent);
-    color: #07070a;
-  }
-  .tab-content {
-    display: none;
-  }
-  .tab-content.active {
-    display: block;
-  }
-  /* Загрузка */
-  .loading-image {
-    width: 100%;
-    height: 180px;
- 	background: url('images/Load.png') center/cover no-repeat;
-    border-radius: 12px;
-    margin-bottom: 16px;
-  }
-  .progress-container {
-    background: rgba(255,255,255,0.1);
-    border-radius: 12px;
-    overflow: hidden;
-    height: 28px;
-    margin-bottom: 12px;
-  }
-  .progress-bar {
-    height: 100%;
-    background: var(--accent);
-    width: 0%;
-    transition: width 0.3s ease;
-  }
-  .loading-msg {
-    font-size: 14px;
-    font-weight: 700;
-    color: var(--accent);
-    height: 24px;
-    margin-bottom: 20px;
-    min-height: 24px;
-    text-align: center;
-  }
-</style>
+  <meta charset="UTF-8" />
+  <title>Lon3r — Панель лаунчера</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <link rel="icon" href="images/Family.png" type="image/png" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg: #05060a;
+      --panel: #10141d;
+      --panel-soft: #131926;
+      --muted: #9aa3ad;
+      --accent: #e2b84a;
+      --danger: #ff5252;
+      --max-w: 980px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 16px;
+      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      color: #e7edf7;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      background: var(--bg);
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* анимированный фон в стиле noodlemagazine */
+    #bg-canvas {
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 10% 0%, #1b1307 0, #05060a 55%),
+        radial-gradient(circle at 100% 100%, #0c0614 0, #05060a 55%);
+    }
+
+    .shell {
+      width: 100%;
+      max-width: var(--max-w);
+      background: linear-gradient(135deg, rgba(255,255,255,0.02), transparent);
+      border-radius: 18px;
+      padding: 18px;
+      border: 1px solid rgba(255,255,255,0.04);
+      box-shadow:
+        0 20px 60px rgba(0,0,0,0.85),
+        0 0 60px rgba(226,184,74,0.15);
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 18px;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      background: radial-gradient(circle at 0 0, rgba(226,184,74,0.16), transparent 60%), var(--panel);
+      border-radius: 14px;
+      padding: 16px 14px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f5d88c, var(--accent));
+      display: grid;
+      place-items: center;
+      color: #181818;
+      font-weight: 900;
+      font-size: 17px;
+      box-shadow: 0 0 14px rgba(226,184,74,0.7);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 17px;
+      font-weight: 800;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .nav-title {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 4px;
+    }
+
+    .nav-list {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .nav-item {
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      border: 1px solid transparent;
+      transition: background 0.25s, transform 0.1s, border-color 0.25s, color 0.25s;
+      color: var(--muted);
+    }
+
+    .nav-item span {
+      pointer-events: none;
+    }
+
+    .nav-item small {
+      font-size: 11px;
+      opacity: 0.7;
+    }
+
+    .nav-item:hover {
+      background: rgba(255,255,255,0.04);
+      transform: translateY(-1px);
+    }
+
+    .nav-item.active {
+      background: rgba(226,184,74,0.16);
+      border-color: rgba(226,184,74,0.6);
+      color: #fff;
+    }
+
+    .nav-badge {
+      padding: 3px 8px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.6);
+      font-size: 11px;
+      color: var(--accent);
+      border: 1px solid rgba(226,184,74,0.5);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.04);
+      padding-top: 8px;
+    }
+
+    .sidebar-footer a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    /* MAIN */
+    .main {
+      background: var(--panel-soft);
+      border-radius: 14px;
+      padding: 18px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .main-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 4px;
+    }
+
+    .main-title {
+      font-size: 18px;
+      font-weight: 800;
+      display: flex;
+      align-items: baseline;
+      gap: 6px;
+    }
+
+    .main-title span {
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .main-status-pill {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.6);
+      font-size: 12px;
+      color: var(--accent);
+      border: 1px solid rgba(226,184,74,0.5);
+    }
+
+    .main-body {
+      flex: 1;
+      border-radius: 10px;
+      background: linear-gradient(145deg, #111727, #0c111b);
+      padding: 12px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .glass-card {
+      background: rgba(0,0,0,0.35);
+      border-radius: 10px;
+      padding: 14px 14px 12px;
+      border: 1px solid rgba(255,255,255,0.05);
+      box-shadow: 0 14px 40px rgba(0,0,0,0.7);
+    }
+
+    .section-sub {
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 2px;
+      margin-bottom: 12px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 9px 11px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.08);
+      background: rgba(0,0,0,0.6);
+      color: #e7edf7;
+      font-size: 14px;
+    }
+
+    input[type="text"]:focus,
+    input[type="password"]:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 1px rgba(226,184,74,0.3);
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 9px 13px;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 700;
+      transition: background 0.22s, transform 0.08s, box-shadow 0.22s;
+      user-select: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(90deg, var(--accent), #f5d88c);
+      color: #101010;
+      box-shadow: 0 0 16px rgba(226,184,74,0.6);
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 0 22px rgba(226,184,74,0.85);
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: default;
+      box-shadow: none;
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--muted);
+      border: 1px solid rgba(255,255,255,0.12);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255,255,255,0.06);
+      color: #fff;
+    }
+
+    .error {
+      color: var(--danger);
+      font-size: 12px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .hint {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .two-cols {
+      display: grid;
+      grid-template-columns: 1.05fr 0.95fr;
+      gap: 12px;
+    }
+
+    .field-group {
+      margin-bottom: 10px;
+    }
+
+    /* PROFILE */
+    .profile-wrapper {
+      display: grid;
+      grid-template-columns: 140px minmax(0,1fr);
+      gap: 16px;
+      align-items: flex-start;
+    }
+
+    .avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 2px solid var(--accent);
+      background: radial-gradient(circle at 30% 0, rgba(226,184,74,0.4), transparent 55%), #05060a;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      position: relative;
+    }
+
+    .avatar img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .avatar input[type="file"] {
+      display: none;
+    }
+
+    .avatar-label {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(0deg, rgba(0,0,0,0.8), transparent);
+      text-align: center;
+      font-size: 11px;
+      padding: 4px 0 5px;
+      color: #fff;
+      pointer-events: none;
+    }
+
+    .profile-info-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .logout-btn {
+      background: var(--danger);
+      color: #fff;
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    /* INSTALLATION */
+    .install-wrapper {
+      display: grid;
+      grid-template-columns: minmax(0,1.15fr) minmax(0,0.85fr);
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .install-steps {
+      background: rgba(0,0,0,0.5);
+      border-radius: 10px;
+      padding: 12px 12px 10px;
+      border: 1px solid rgba(255,255,255,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .step-row {
+      display: grid;
+      grid-template-columns: 68px minmax(0,1fr) 58px;
+      gap: 8px;
+      align-items: center;
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .step-index {
+      font-weight: 700;
+      text-align: center;
+      padding: 4px 6px;
+      border-radius: 999px;
+      background: rgba(0,0,0,0.7);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .step-main {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .step-title {
+      font-size: 12px;
+      color: #f5f5f5;
+      font-weight: 600;
+    }
+
+    .step-bar {
+      position: relative;
+      width: 100%;
+      height: 6px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+    }
+
+    .step-bar-fill {
+      position: absolute;
+      inset: 0;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), #f5d88c);
+      transition: width 0.4s ease;
+    }
+
+    .step-status {
+      text-align: right;
+      font-size: 11px;
+    }
+
+    .overall {
+      margin-top: 8px;
+      padding: 10px 10px 8px;
+      border-radius: 8px;
+      background: rgba(0,0,0,0.7);
+      border: 1px solid rgba(226,184,74,0.6);
+      font-size: 12px;
+    }
+
+    .overall-title {
+      font-weight: 700;
+      margin-bottom: 4px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .overall-bar {
+      position: relative;
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.06);
+      overflow: hidden;
+      margin-top: 6px;
+    }
+
+    .overall-bar-fill {
+      position: absolute;
+      inset: 0;
+      width: 0%;
+      background: linear-gradient(90deg, var(--accent), #f5d88c);
+      box-shadow: 0 0 14px rgba(226,184,74,0.7);
+      transition: width 0.4s ease;
+    }
+
+    .overall-meta {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .install-panel {
+      background: url('images/Load.png') center/cover no-repeat, radial-gradient(circle at 0 0, rgba(226,184,74,0.4), transparent 65%);
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.08);
+      position: relative;
+      overflow: hidden;
+      min-height: 190px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
+    .install-panel-inner {
+      backdrop-filter: blur(10px);
+      background: linear-gradient(0deg, rgba(0,0,0,0.9), rgba(0,0,0,0.4));
+      padding: 10px 11px;
+      font-size: 12px;
+    }
+
+    .install-status {
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+      min-height: 18px;
+    }
+
+    .install-text {
+      color: var(--muted);
+      min-height: 32px;
+    }
+
+    .install-btns {
+      display: flex;
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    /* TABS (content) */
+    .view {
+      display: none;
+    }
+    .view.active {
+      display: block;
+    }
+
+    /* TOASTS */
+    .toast {
+      position: fixed;
+      left: 50%;
+      bottom: 22px;
+      transform: translateX(-50%) translateY(120%);
+      background: rgba(10,13,20,0.96);
+      border-radius: 999px;
+      padding: 8px 14px;
+      max-width: 320px;
+      font-size: 12px;
+      color: #f5f5f5;
+      box-shadow: 0 16px 40px rgba(0,0,0,0.8);
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      z-index: 9999;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+      pointer-events: auto;
+    }
+
+    .toast-pill {
+      width: 18px;
+      height: 18px;
+      border-radius: 999px;
+      background: var(--accent);
+      display: grid;
+      place-items: center;
+      color: #111;
+      font-size: 12px;
+      font-weight: 900;
+    }
+
+    .toast-close {
+      margin-left: auto;
+      cursor: pointer;
+      opacity: 0.7;
+      font-size: 14px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 880px) {
+      .shell {
+        grid-template-columns: 1fr;
+      }
+      .sidebar {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .nav-title {
+        display: none;
+      }
+      .nav-list {
+        flex-direction: row;
+        flex-wrap: wrap;
+      }
+      .sidebar-footer {
+        display: none;
+      }
+    }
+
+    @media (max-width: 640px) {
+      body {
+        padding: 14px 8px;
+      }
+      .shell {
+        padding: 12px;
+      }
+      .install-wrapper {
+        grid-template-columns: 1fr;
+      }
+      .profile-wrapper {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
 </head>
 <body>
+<canvas id="bg-canvas"></canvas>
 
-<div class="container" id="app">
-
-  <!-- Вкладки -->
-  <div class="tabs">
-    <div class="tab active" data-tab="login">Вход</div>
-    <div class="tab" data-tab="profile" style="display:none;">Профиль</div>
-    <div class="tab" data-tab="loading" style="display:none;">Загрузка</div>
-  </div>
-
-  <!-- Вкладка Вход -->
-  <div id="login" class="tab-content active">
-    <h2>Вход в аккаунт</h2>
-    <div class="error" id="error-msg" style="display:none;"></div>
-    <label for="login-input">Логин</label>
-    <input type="text" id="login-input" autocomplete="off" />
-    <label for="password-input">Пароль</label>
-    <input type="password" id="password-input" autocomplete="off" />
-    <button id="login-btn">Войти</button>
-  </div>
-
-  <!-- Вкладка Профиль -->
-  <div id="profile" class="tab-content">
-    <h2>Личный профиль</h2>
-    <div class="avatar" title="Нажми, чтобы сменить аватар">
-      <img src="" alt="Аватар" id="avatar-img" />
-      <input type="file" id="avatar-input" accept="image/*" />
+<div class="shell">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-logo">L3</div>
+      <div class="brand-text">
+        <div class="brand-title">Lon3r Panel</div>
+        <div class="brand-sub">private server launcher</div>
+      </div>
     </div>
 
-    <div class="profile-info">
-      <label for="nickname-input">Никнейм</label>
-      <input type="text" id="nickname-input" />
+    <div>
+      <div class="nav-title">НАВИГАЦИЯ</div>
+      <div class="nav-list">
+        <div class="nav-item active" data-view="view-login">
+          <span>Вход</span>
+          <span><small>auth</small></span>
+        </div>
+        <div class="nav-item" data-view="view-profile">
+          <span>Профиль</span>
+          <span><small>account</small></span>
+        </div>
+        <div class="nav-item" data-view="view-install">
+          <span>Установка клиента</span>
+          <span class="nav-badge">steps</span>
+        </div>
+      </div>
     </div>
 
-    <div class="profile-info">
-      <label for="new-password-input">Новый пароль</label>
-      <input type="password" id="new-password-input" placeholder="Оставь пустым, если не менять" />
+    <div class="sidebar-footer">
+      Не является официальным продуктом PUBG MOBILE.<br />
+      Канал: <a href="https://t.me/+ONbveZ793EJiMzli" target="_blank">Telegram Lon3r</a>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="main-header">
+      <div class="main-title">
+        Панель лаунчера
+        <span id="header-sub">Вход и активация</span>
+      </div>
+      <div class="main-status-pill" id="status-pill">Режим: не авторизован</div>
     </div>
 
-    <button id="save-btn">Сохранить изменения</button>
-    <button class="logout-btn" id="logout-btn">Выйти</button>
-  </div>
+    <div class="main-body">
+      <!-- LOGIN VIEW -->
+      <div class="view active" id="view-login">
+        <div class="glass-card">
+          <h3 style="margin:0 0 4px;font-size:16px;">Вход в аккаунт</h3>
+          <div class="section-sub">
+            Логин и пароль выдаёт Telegram-бот после оплаты доступа.<br />
+            Для теста: логин <b>demo</b>, пароль <b>demo123</b>.
+          </div>
 
-  <!-- Вкладка Загрузка -->
-  <div id="loading" class="tab-content">
-    <h2>Lon3r Private Server</h2>
-    <div class="loading-image"></div>
-    <button id="start-download-btn">Загрузить</button>
-    <div class="progress-container" style="margin-top: 20px;">
-      <div class="progress-bar" id="progress-bar"></div>
+          <div class="two-cols">
+            <div>
+              <div class="error" id="error-msg" style="display:none;"></div>
+
+              <div class="field-group">
+                <label for="login-input">Логин</label>
+                <input type="text" id="login-input" autocomplete="off" />
+              </div>
+
+              <div class="field-group">
+                <label for="password-input">Пароль</label>
+                <input type="password" id="password-input" autocomplete="off" />
+              </div>
+
+              <button class="btn btn-primary" id="login-btn" style="width:100%;margin-top:4px;">
+                Войти в панель
+              </button>
+
+              <div class="hint">
+                Нет данных? Зайди в <a href="https://t.me/+ONbveZ793EJiMzli" target="_blank" style="color:var(--accent);text-decoration:none;">официальный канал</a>
+                и оформи доступ через бота.
+              </div>
+            </div>
+
+            <div style="font-size:12px;color:var(--muted);display:flex;flex-direction:column;gap:6px;">
+              <div style="font-weight:700;color:#fff;">Маленький FAQ</div>
+              <div>• Логин/пароль от лаунчера не связаны с твоим основным PUBG-аккаунтом.</div>
+              <div>• Доступ может быть ограничен по железу и количеству устройств.</div>
+              <div>• При проблемах с входом обращайся в поддержку через Telegram с ID оплаты.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROFILE VIEW -->
+      <div class="view" id="view-profile">
+        <div class="glass-card">
+          <h3 style="margin:0 0 4px;font-size:16px;">Личный профиль</h3>
+          <div class="section-sub">
+            Настройки профиля используются в лаунчере и на стороне сервера.  
+            Эти данные не передаются третьим лицам.
+          </div>
+
+          <div class="profile-wrapper">
+            <div>
+              <div class="avatar" id="avatar-click">
+                <img src="" alt="Avatar" id="avatar-img" />
+                <input type="file" id="avatar-input" accept="image/*" />
+                <div class="avatar-label">Сменить аватар</div>
+              </div>
+            </div>
+
+            <div>
+              <div class="profile-info-row">
+                <div class="field-group">
+                  <label for="nickname-input">Никнейм в системе</label>
+                  <input type="text" id="nickname-input" />
+                </div>
+                <div class="field-group">
+                  <label for="user-login-view">Логин</label>
+                  <input type="text" id="user-login-view" disabled style="opacity:.75;" />
+                </div>
+              </div>
+
+              <div class="field-group">
+                <label for="new-password-input">Новый пароль</label>
+                <input type="password" id="new-password-input" placeholder="Оставь пустым, если менять не нужно" />
+                <div class="hint">
+                  Меняется только пароль от лаунчера Lon3r (игровой аккаунт это не трогает).
+                </div>
+              </div>
+
+              <button class="btn btn-primary" id="save-btn" style="width:100%;margin-top:6px;">
+                Сохранить профиль
+              </button>
+              <button class="btn logout-btn" id="logout-btn">
+                Выйти из панели
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INSTALL VIEW -->
+      <div class="view" id="view-install">
+        <div class="glass-card">
+          <h3 style="margin:0 0 4px;font-size:16px;">Установка клиента Lon3r</h3>
+          <div class="section-sub">
+            Загрузка разбита на несколько этапов. Не обязательно сидеть у экрана — главное не закрывать лаунчер.
+          </div>
+
+          <div class="install-wrapper">
+            <!-- steps -->
+            <div class="install-steps" id="steps-container">
+              <!-- шаги рендерятся через JS -->
+            </div>
+
+            <!-- status panel -->
+            <div class="install-panel">
+              <div class="install-panel-inner">
+                <div class="install-status" id="install-status">
+                  Установка ещё не запущена.
+                </div>
+                <div class="install-text" id="install-text">
+                  Нажми «Начать установку», чтобы запустить все этапы по порядку.
+                  В процессе будут появляться подсказки по ускорению загрузки и стабильности.
+                </div>
+                <div class="install-btns">
+                  <button class="btn btn-primary" id="start-install-btn" style="flex:1;">
+                    Начать установку
+                  </button>
+                  <button class="btn btn-outline" id="pause-install-btn" style="flex:0.9;" disabled>
+                    Пауза
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="overall" id="overall-block">
+            <div class="overall-title">
+              <span>Общий прогресс</span>
+              <span id="overall-percent">0%</span>
+            </div>
+            <div class="overall-bar">
+              <div class="overall-bar-fill" id="overall-bar-fill"></div>
+            </div>
+            <div class="overall-meta">
+              <span id="overall-steps-done">Завершено этапов: 0 / 8</span>
+              <span id="overall-status-label">Статус: ожидание</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
-    <div class="loading-msg" id="loading-msg"></div>
-  </div>
+  </main>
+</div>
 
+<!-- TOASTS -->
+<div class="toast" id="toast">
+  <div class="toast-pill">!</div>
+  <div id="toast-text"></div>
+  <div class="toast-close" id="toast-close">×</div>
 </div>
 
 <script>
-  // Аккаунты (фикс)
+  // ===== АНИМИРОВАННЫЙ ФОН (дым/пятна) =====
+  (function() {
+    const canvas = document.getElementById("bg-canvas");
+    if (!canvas || !canvas.getContext) return;
+    const ctx = canvas.getContext("2d");
+
+    let w, h;
+    function resize() {
+      w = canvas.width = window.innerWidth * 1.5;
+      h = canvas.height = window.innerHeight * 1.5;
+    }
+    window.addEventListener("resize", resize);
+    resize();
+
+    const blobs = [];
+    const BLOBS_COUNT = 12;
+
+    function rand(min, max) {
+      return Math.random() * (max - min) + min;
+    }
+
+    for (let i = 0; i < BLOBS_COUNT; i++) {
+      blobs.push({
+        x: rand(0, w),
+        y: rand(0, h),
+        r: rand(180, 360),
+        dx: rand(-0.08, 0.08),
+        dy: rand(-0.06, 0.06),
+        alpha: rand(0.08, 0.25)
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, w, h);
+      ctx.globalCompositeOperation = "source-over";
+      const grd = ctx.createLinearGradient(0, 0, w, h);
+      grd.addColorStop(0, "#05060a");
+      grd.addColorStop(1, "#05060a");
+      ctx.fillStyle = grd;
+      ctx.fillRect(0, 0, w, h);
+
+      ctx.globalCompositeOperation = "lighter";
+      blobs.forEach(b => {
+        b.x += b.dx;
+        b.y += b.dy;
+
+        if (b.x - b.r > w) b.x = -b.r;
+        if (b.x + b.r < 0) b.x = w + b.r;
+        if (b.y - b.r > h) b.y = -b.r;
+        if (b.y + b.r < 0) b.y = h + b.r;
+
+        const g = ctx.createRadialGradient(b.x, b.y, 0, b.x, b.y, b.r);
+        g.addColorStop(0, "rgba(226,184,74," + b.alpha + ")");
+        g.addColorStop(1, "rgba(0,0,0,0)");
+        ctx.fillStyle = g;
+        ctx.beginPath();
+        ctx.arc(b.x, b.y, b.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+
+  // ==== DEMO USERS ====
   const users = {
+    "demo": { password: "demo123", nickname: "DemoUser", avatar: "" },
     "Lon3r": { password: "Lon3rPS", nickname: "Lon3r", avatar: "" },
     "Shadow": { password: "Shadow123", nickname: "Shadow", avatar: "" },
     "Viper": { password: "Viper007", nickname: "Viper", avatar: "" },
-    "F7s9j1g9": { password: "J88A612qe", nickname: "F7s9j1g9", avatar: "" },
+    "F7s9j1g9": { password: "J88A612qe", nickname: "F7s9j1g9", avatar: "" }
   };
 
-  // Элементы
-  const tabs = document.querySelectorAll(".tab");
-  const tabContents = document.querySelectorAll(".tab-content");
-  const loginTab = document.getElementById("login");
-  const profileTab = document.getElementById("profile");
-  const loadingTab = document.getElementById("loading");
+  let currentUser = null;
+
+  const views = document.querySelectorAll(".view");
+  const navItems = document.querySelectorAll(".nav-item");
+  const headerSub = document.getElementById("header-sub");
+  const statusPill = document.getElementById("status-pill");
+
+  const loginView = document.getElementById("view-login");
+  const profileView = document.getElementById("view-profile");
+  const installView = document.getElementById("view-install");
 
   const loginInput = document.getElementById("login-input");
   const passwordInput = document.getElementById("password-input");
@@ -261,229 +934,455 @@
 
   const avatarImg = document.getElementById("avatar-img");
   const avatarInput = document.getElementById("avatar-input");
+  const avatarClick = document.getElementById("avatar-click");
   const nicknameInput = document.getElementById("nickname-input");
+  const userLoginView = document.getElementById("user-login-view");
   const newPasswordInput = document.getElementById("new-password-input");
   const saveBtn = document.getElementById("save-btn");
   const logoutBtn = document.getElementById("logout-btn");
 
-  const startDownloadBtn = document.getElementById("start-download-btn");
-  const progressBar = document.getElementById("progress-bar");
-  const loadingMsg = document.getElementById("loading-msg");
+  // INSTALL elements
+  const stepsContainer = document.getElementById("steps-container");
+  const startInstallBtn = document.getElementById("start-install-btn");
+  const pauseInstallBtn = document.getElementById("pause-install-btn");
+  const installStatus = document.getElementById("install-status");
+  const installText = document.getElementById("install-text");
+  const overallBarFill = document.getElementById("overall-bar-fill");
+  const overallPercent = document.getElementById("overall-percent");
+  const overallStepsDone = document.getElementById("overall-steps-done");
+  const overallStatusLabel = document.getElementById("overall-status-label");
 
-  let currentUser = null;
+  // Toast elements
+  const toast = document.getElementById("toast");
+  const toastText = document.getElementById("toast-text");
+  const toastClose = document.getElementById("toast-close");
 
-  // Скрываем вкладки "Профиль" и "Загрузка" если не залогинен
-  function updateTabsVisibility(loggedIn) {
-    const profileTabBtn = document.querySelector('.tab[data-tab="profile"]');
-    const loadingTabBtn = document.querySelector('.tab[data-tab="loading"]');
-
-    if (loggedIn) {
-      profileTabBtn.style.display = "inline-flex";
-      loadingTabBtn.style.display = "inline-flex";
-    } else {
-      profileTabBtn.style.display = "none";
-      loadingTabBtn.style.display = "none";
-
-      // Переключаемся на вход
-      tabs.forEach(t => t.classList.remove("active"));
-      document.querySelector(`.tab[data-tab="login"]`).classList.add("active");
-      tabContents.forEach(tc => {
-        if(tc.id === "login") {
-          tc.classList.add("active");
-        } else {
-          tc.classList.remove("active");
+  // ==== LOCAL STORAGE ====
+  function loadUsersData() {
+    const stored = localStorage.getItem("loner_users");
+    if (stored) {
+      try {
+        const parsed = JSON.parse(stored);
+        for (const k in parsed) {
+          if (users[k]) users[k] = parsed[k];
         }
-      });
+      } catch (e) {}
     }
   }
 
-  // Вкладки переключение
-  tabs.forEach(tab => {
-    tab.addEventListener("click", () => {
-      // Если не залогинен и пытаемся открыть не вход — блокируем
-      if (!currentUser && tab.dataset.tab !== "login") return;
+  function saveUsersData() {
+    localStorage.setItem("loner_users", JSON.stringify(users));
+  }
 
-      tabs.forEach(t => t.classList.remove("active"));
-      tab.classList.add("active");
-      const target = tab.dataset.tab;
-      tabContents.forEach(tc => {
-        if(tc.id === target) {
-          tc.classList.add("active");
-        } else {
-          tc.classList.remove("active");
-        }
-      });
+  function setCurrentUser(user) {
+    currentUser = user;
+    if (user) {
+      localStorage.setItem("loner_current_user", user);
+    } else {
+      localStorage.removeItem("loner_current_user");
+    }
+  }
+
+  function renderHeaderState() {
+    if (!currentUser) {
+      statusPill.textContent = "Режим: не авторизован";
+      headerSub.textContent = "Вход и активация";
+    } else {
+      statusPill.textContent = "Режим: " + currentUser + " • online";
+      headerSub.textContent = "Профиль и установка клиента";
+    }
+  }
+
+  function renderProfile() {
+    if (!currentUser) return;
+    const data = users[currentUser];
+    nicknameInput.value = data.nickname || currentUser;
+    userLoginView.value = currentUser;
+    avatarImg.src = data.avatar || ("https://i.pravatar.cc/200?u=" + encodeURIComponent(currentUser));
+  }
+
+  // ==== VIEW SWITCH ====
+  function activateView(id) {
+    views.forEach(v => v.classList.remove("active"));
+    const view = document.getElementById(id);
+    if (view) view.classList.add("active");
+  }
+
+  navItems.forEach(item => {
+    item.addEventListener("click", () => {
+      const viewId = item.getAttribute("data-view");
+
+      if (!currentUser && viewId !== "view-login") return;
+
+      navItems.forEach(n => n.classList.remove("active"));
+      item.classList.add("active");
+      activateView(viewId);
+
+      if (viewId === "view-login") {
+        headerSub.textContent = "Вход и активация";
+      } else if (viewId === "view-profile") {
+        headerSub.textContent = "Управление аккаунтом";
+      } else if (viewId === "view-install") {
+        headerSub.textContent = "Установка и загрузка файлов";
+      }
     });
   });
 
-  // Загрузка данных пользователей из localStorage
-  function loadUsersData() {
-    const data = localStorage.getItem("usersData");
-    if (data) {
-      const parsed = JSON.parse(data);
-      for (const key in parsed) {
-        if (users[key]) {
-          users[key] = parsed[key];
-        }
-      }
-    }
-  }
-
-  // Сохраняем данные пользователя в localStorage
-  function saveUserData() {
-    if (!currentUser) return;
-    users[currentUser].nickname = nicknameInput.value.trim() || currentUser;
-    if (newPasswordInput.value.trim()) {
-      users[currentUser].password = newPasswordInput.value.trim();
-      alert("Пароль изменён!");
-      newPasswordInput.value = "";
-    }
-    localStorage.setItem("usersData", JSON.stringify(users));
-    localStorage.setItem("currentUser", currentUser);
-    alert("Данные сохранены!");
-    renderProfile();
-  }
-
-  // Отрисовка профиля
-  function renderProfile() {
-    if (!currentUser) return;
-    const user = users[currentUser];
-    avatarImg.src = user.avatar || `https://i.pravatar.cc/120?u=${currentUser}`;
-    nicknameInput.value = user.nickname || currentUser;
-  }
-
-  // Вход
+  // ==== LOGIN ====
   loginBtn.addEventListener("click", () => {
-    const login = loginInput.value.trim();
-    const password = passwordInput.value.trim();
+    const login = (loginInput.value || "").trim();
+    const password = (passwordInput.value || "").trim();
+
     if (!login || !password) {
+      errorMsg.textContent = "Введите логин и пароль.";
       errorMsg.style.display = "block";
-      errorMsg.textContent = "Введите логин и пароль";
       return;
     }
+
     if (!users[login] || users[login].password !== password) {
+      errorMsg.textContent = "Неверный логин или пароль.";
       errorMsg.style.display = "block";
-      errorMsg.textContent = "Неверный логин или пароль";
       return;
     }
+
     errorMsg.style.display = "none";
-    currentUser = login;
-    localStorage.setItem("currentUser", currentUser);
+    setCurrentUser(login);
     loginInput.value = "";
     passwordInput.value = "";
 
-    updateTabsVisibility(true);
-
-    // Переключаемся на профиль
-    tabs.forEach(t => t.classList.remove("active"));
-    document.querySelector(`.tab[data-tab="profile"]`).classList.add("active");
-    tabContents.forEach(tc => tc.classList.remove("active"));
-    profileTab.classList.add("active");
+    renderHeaderState();
     renderProfile();
+    saveUsersData();
+
+    navItems.forEach(n => n.classList.remove("active"));
+    document.querySelector('.nav-item[data-view="view-profile"]').classList.add("active");
+    activateView("view-profile");
   });
 
-  // Лоад данных при загрузке
-  window.addEventListener("load", () => {
-    loadUsersData();
-    const savedUser = localStorage.getItem("currentUser");
-    if (savedUser && users[savedUser]) {
-      currentUser = savedUser;
-      updateTabsVisibility(true);
-      tabs.forEach(t => t.classList.remove("active"));
-      document.querySelector(`.tab[data-tab="profile"]`).classList.add("active");
-      tabContents.forEach(tc => tc.classList.remove("active"));
-      profileTab.classList.add("active");
-      renderProfile();
-    } else {
-      updateTabsVisibility(false);
-    }
+  [loginInput, passwordInput].forEach(el => {
+    el.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") loginBtn.click();
+    });
   });
 
-  // Смена аватара
-  avatarImg.addEventListener("click", () => {
+  // ==== PROFILE LOGIC ====
+  avatarClick.addEventListener("click", () => {
+    if (!currentUser) return;
     avatarInput.click();
   });
+
   avatarInput.addEventListener("change", () => {
+    if (!currentUser) return;
     const file = avatarInput.files[0];
     if (!file) return;
+
     const reader = new FileReader();
     reader.onload = (e) => {
-      users[currentUser].avatar = e.target.result;
-      avatarImg.src = e.target.result;
-      saveUserData();
+      const dataUrl = e.target.result;
+      users[currentUser].avatar = dataUrl;
+      avatarImg.src = dataUrl;
+      saveUsersData();
     };
     reader.readAsDataURL(file);
   });
 
-  // Сохранить профиль
   saveBtn.addEventListener("click", () => {
-    saveUserData();
+    if (!currentUser) return;
+    const nickname = nicknameInput.value.trim();
+    const newPass = newPasswordInput.value.trim();
+
+    if (nickname) {
+      users[currentUser].nickname = nickname;
+    }
+
+    if (newPass) {
+      users[currentUser].password = newPass;
+      alert("Пароль лаунчера обновлён.");
+      newPasswordInput.value = "";
+    }
+
+    saveUsersData();
+    alert("Профиль сохранён.");
   });
 
-  // Выйти
   logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("currentUser");
-    currentUser = null;
-    updateTabsVisibility(false);
-    errorMsg.style.display = "none";
+    setCurrentUser(null);
+    renderHeaderState();
+    navItems.forEach(n => n.classList.remove("active"));
+    document.querySelector('.nav-item[data-view="view-login"]').classList.add("active");
+    activateView("view-login");
   });
 
-  // --- Загрузка ---
-
-  const facts = [
-    "Знаешь ли ты, что в Lon3r Private Server можно создавать свой мерч?",
-    "Интересно, что некоторые админы в Lon3r Private Server страдают хуйнёй.",
-    "В Lon3r Private Server есть уникальные кастомные машины.",
-    "Пиздатый Античит только у нас:)",
-    "Админки защищены от хакеров и всегда на страже порядка.",
-    "В Lon3r используются новейшие технологии для стабильности.",
-    "Пинг минимален, лагов почти нет — игра как по маслу.",
-    "В Lon3r иногда проходят онлайн встречи игроков для обсуждений.",
-    "Есть внутриигровые ивенты с крутыми призами.",
-    "Ребята постоянно обновляют контент, держат сервер живым."
+  // ==== INSTALLATION SYSTEM ====
+  const stepsConfig = [
+    { title: "Проверка среды и привязка лаунчера", minutes: 35 },
+    { title: "Загрузка базовых файлов клиента", minutes: 40 },
+    { title: "Установка карт и текстур high-res", minutes: 55 },
+    { title: "Подготовка античита и защитных модулей", minutes: 45 },
+    { title: "Скачивание ресурсов Lon3r Private Server", minutes: 50 },
+    { title: "Синхронизация с мастер-сервером", minutes: 60 },
+    { title: "Оптимизация и сборка кеша", minutes: 35 },
+    { title: "Финальная проверка файлов и подписи", minutes: 40 }
   ];
 
-  let loadingInterval = null;
-  let messageInterval = null;
-  let downloadStart = null;
-  let downloadDuration = null;
+  const totalMinutes = stepsConfig.reduce((sum, s) => sum + s.minutes, 0); // 360
+  const totalMs = totalMinutes * 60 * 1000;
 
-  startDownloadBtn.addEventListener("click", () => {
-    if (loadingInterval) return;
+  let installStartedAt = null;
+  let pausedAt = null;
+  let installTimer = null;
+  let installPaused = false;
 
-    downloadDuration = (4 + Math.random() * 4) * 3600 * 1000;
-    downloadStart = Date.now();
+  const stepElements = [];
+  function buildStepsUI() {
+    stepsContainer.innerHTML = "";
+    stepsConfig.forEach((step, index) => {
+      const row = document.createElement("div");
+      row.className = "step-row";
 
-    progressBar.style.width = "0%";
-    loadingMsg.textContent = "Начинаем загрузку...";
-    startDownloadBtn.disabled = true;
+      const indexEl = document.createElement("div");
+      indexEl.className = "step-index";
+      indexEl.textContent = (index + 1) + " / " + stepsConfig.length;
 
-    loadingInterval = setInterval(() => {
-      const elapsed = Date.now() - downloadStart;
-      let progress = Math.min(elapsed / downloadDuration, 1);
-      progressBar.style.width = (progress * 100).toFixed(2) + "%";
+      const main = document.createElement("div");
+      main.className = "step-main";
 
-      if (progress >= 1) {
-        loadingMsg.textContent = "Загрузка завершена! Можно запускать сервер.";
-        clearInterval(loadingInterval);
-        clearInterval(messageInterval);
-        loadingInterval = null;
-        startDownloadBtn.disabled = false;
+      const title = document.createElement("div");
+      title.className = "step-title";
+      title.textContent = step.title;
+
+      const bar = document.createElement("div");
+      bar.className = "step-bar";
+      const barFill = document.createElement("div");
+      barFill.className = "step-bar-fill";
+      bar.appendChild(barFill);
+
+      main.appendChild(title);
+      main.appendChild(bar);
+
+      const status = document.createElement("div");
+      status.className = "step-status";
+      status.textContent = "Ожидание";
+
+      row.appendChild(indexEl);
+      row.appendChild(main);
+      row.appendChild(status);
+
+      stepsContainer.appendChild(row);
+
+      stepElements.push({
+        indexEl,
+        title,
+        barFill,
+        status,
+        minutes: step.minutes
+      });
+    });
+  }
+
+  buildStepsUI();
+
+  function getElapsedMs() {
+    if (!installStartedAt) return 0;
+    const now = Date.now();
+    if (installPaused && pausedAt) {
+      return pausedAt - installStartedAt;
+    }
+    return now - installStartedAt;
+  }
+
+  function findCurrentStep(elapsedMs) {
+    let acc = 0;
+    for (let i = 0; i < stepsConfig.length; i++) {
+      const stepMs = stepsConfig[i].minutes * 60 * 1000;
+      if (elapsedMs < acc + stepMs) {
+        const insideMs = elapsedMs - acc;
+        return { index: i, insideMs, stepMs };
       }
-    }, 1000);
+      acc += stepMs;
+    }
+    return { index: stepsConfig.length - 1, insideMs: stepsConfig[stepsConfig.length - 1].minutes * 60 * 1000, stepMs: stepsConfig[stepsConfig.length - 1].minutes * 60 * 1000 };
+  }
 
-    let lastFactIndex = -1;
-    messageInterval = setInterval(() => {
-      let idx;
-      do {
-        idx = Math.floor(Math.random() * facts.length);
-      } while (idx === lastFactIndex);
-      lastFactIndex = idx;
-      loadingMsg.textContent = facts[idx];
-    }, 30000);
+  function updateInstallUI() {
+    const elapsedMs = getElapsedMs();
+    const progress = Math.min(1, elapsedMs / totalMs);
+
+    overallBarFill.style.width = (progress * 100).toFixed(1) + "%";
+    overallPercent.textContent = Math.round(progress * 100) + "%";
+
+    const { index, insideMs, stepMs } = findCurrentStep(elapsedMs);
+
+    let doneSteps = 0;
+
+    stepsConfig.forEach((step, i) => {
+      const el = stepElements[i];
+      if (!el) return;
+
+      if (elapsedMs >= totalMs || i < index) {
+        el.barFill.style.width = "100%";
+        el.status.textContent = "Готово";
+        el.status.style.color = "#a5d6a7";
+        doneSteps++;
+      } else if (i === index && elapsedMs < totalMs) {
+        const stepProgress = Math.min(1, insideMs / stepMs);
+        el.barFill.style.width = (stepProgress * 100).toFixed(1) + "%";
+        el.status.textContent = "В процессе";
+        el.status.style.color = "#fff";
+      } else {
+        el.barFill.style.width = "0%";
+        el.status.textContent = "Ожидание";
+        el.status.style.color = "var(--muted)";
+      }
+    });
+
+    overallStepsDone.textContent = "Завершено этапов: " + doneSteps + " / " + stepsConfig.length;
+
+    if (elapsedMs >= totalMs) {
+      clearInterval(installTimer);
+      installTimer = null;
+      installPaused = false;
+      startInstallBtn.disabled = false;
+      pauseInstallBtn.disabled = true;
+
+      installStatus.textContent = "Установка завершена.";
+      installText.textContent = "Все этапы установки клиента Lon3r успешно пройдены. Можно запускать игру и подключаться к приватному серверу.";
+      overallStatusLabel.textContent = "Статус: завершено";
+    } else {
+      const currentStep = stepsConfig[index];
+      installStatus.textContent = "Этап " + (index + 1) + " из " + stepsConfig.length + ": " + currentStep.title;
+      installText.textContent = "Текущий этап может занять заметное время. Не закрывай лаунчер — его можно свернуть и заняться своими делами.";
+      overallStatusLabel.textContent = "Статус: установка в процессе";
+    }
+  }
+
+  function startInstall() {
+    if (!installStartedAt) {
+      installStartedAt = Date.now();
+    } else if (installPaused && pausedAt) {
+      const pausedDuration = Date.now() - pausedAt;
+      installStartedAt += pausedDuration;
+    }
+
+    installPaused = false;
+    pausedAt = null;
+    startInstallBtn.disabled = true;
+    pauseInstallBtn.disabled = false;
+
+    if (!installTimer) {
+      installTimer = setInterval(updateInstallUI, 1000);
+    }
+    updateInstallUI();
+  }
+
+  function pauseInstall() {
+    if (!installStartedAt || installPaused) return;
+    installPaused = true;
+    pausedAt = Date.now();
+    pauseInstallBtn.textContent = "Продолжить";
+    startInstallBtn.disabled = true;
+
+    if (installTimer) {
+      clearInterval(installTimer);
+      installTimer = null;
+    }
+
+    installStatus.textContent = "Установка приостановлена.";
+    installText.textContent = "Процесс можно будет продолжить с этого же места. Не удаляй лаунчер и его файлы, если собираешься возобновить установку.";
+    overallStatusLabel.textContent = "Статус: пауза";
+  }
+
+  startInstallBtn.addEventListener("click", () => {
+    if (getElapsedMs() >= totalMs) {
+      installStartedAt = null;
+      pausedAt = null;
+      installPaused = false;
+      stepElements.forEach(el => {
+        el.barFill.style.width = "0%";
+        el.status.textContent = "Ожидание";
+        el.status.style.color = "var(--muted)";
+      });
+      overallBarFill.style.width = "0%";
+      overallPercent.textContent = "0%";
+      overallStepsDone.textContent = "Завершено этапов: 0 / " + stepsConfig.length;
+      overallStatusLabel.textContent = "Статус: ожидание";
+    }
+
+    pauseInstallBtn.textContent = "Пауза";
+    startInstall();
   });
 
-</script>
+  pauseInstallBtn.addEventListener("click", () => {
+    if (!installStartedAt) return;
 
+    if (!installPaused) {
+      pauseInstall();
+    } else {
+      pauseInstallBtn.textContent = "Пауза";
+      startInstall();
+    }
+  });
+
+  // ==== TOAST HINTS (VPN, скорость и т.п.) ====
+  const toastMessages = [
+    "Плохо грузит? Попробуй включить VPN и выбрать другой регион (DE / NL / PL часто стабильнее).",
+    "Скорость еле ползёт? Выключи торренты, стримы и онлайн-кино, пока идёт установка.",
+    "Ping скачет и загрузка дёрганая? Переподключи Wi-Fi или по возможности используй кабель.",
+    "Если один этап долго висит на месте — это нормально, просто дай ему время.",
+    "Для стабильной загрузки добавь лаунчер в исключения антивируса и файрвола.",
+    "Используешь VPN? Если стало хуже, смени страну или попробуй без него.",
+    "Не закрывай лаунчер во время установки. Лучше сверни его и займись другими делами."
+  ];
+
+  let toastTimer = null;
+  let toastVisible = false;
+
+  function showToastRandom() {
+    if (!installStartedAt || installPaused || getElapsedMs() >= totalMs) return;
+
+    const msg = toastMessages[Math.floor(Math.random() * toastMessages.length)];
+    toastText.textContent = msg;
+    toast.classList.add("show");
+    toastVisible = true;
+
+    setTimeout(() => {
+      if (!toastVisible) return;
+      toast.classList.remove("show");
+      toastVisible = false;
+    }, 9000);
+  }
+
+  function setupToastLoop() {
+    if (toastTimer) clearInterval(toastTimer);
+    toastTimer = setInterval(() => {
+      if (!installStartedAt || installPaused || getElapsedMs() === 0 || getElapsedMs() >= totalMs) return;
+      showToastRandom();
+    }, 180000); // каждые ~3 минуты
+  }
+
+  toastClose.addEventListener("click", () => {
+    toast.classList.remove("show");
+    toastVisible = false;
+  });
+
+  setupToastLoop();
+
+  // ==== INIT ====
+  window.addEventListener("load", () => {
+    loadUsersData();
+    const savedUser = localStorage.getItem("loner_current_user");
+    if (savedUser && users[savedUser]) {
+      setCurrentUser(savedUser);
+      renderProfile();
+      navItems.forEach(n => n.classList.remove("active"));
+      document.querySelector('.nav-item[data-view="view-profile"]').classList.add("active");
+      activateView("view-profile");
+    } else {
+      setCurrentUser(null);
+      activateView("view-login");
+    }
+    renderHeaderState();
+  });
+</script>
 </body>
 </html>
