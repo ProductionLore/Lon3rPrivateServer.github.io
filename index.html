@@ -7,589 +7,669 @@
   <title>Lon3r Private Server</title>
 
   <!-- Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;900&family=Oswald:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700;800;900&display=swap" rel="stylesheet" />
 
   <style>
     :root {
-      --bg: #0a0a0c;
-      --panel: #0f1113;
-      --muted: #9aa3ad;
-      --accent: #e2b84a; /* золотой */
-      --glow: 0 6px 30px rgba(226, 184, 74, 0.18), inset 0 1px 0 rgba(255, 255, 255, 0.04);
-      --glass: rgba(255, 255, 255, 0.03);
+      --bg: #05070a;
+      --panel: #0f1115;
+      --panel-soft: #13161c;
+      --muted: #8f98a4;
+      --accent: #e2b84a;
       --max-w: 1200px;
     }
 
-    * {
-      box-sizing: border-box;
-    }
-    html,
-    body {
+    * { box-sizing: border-box; }
+
+    html, body {
       height: 100%;
     }
+
     body {
       margin: 0;
-      padding: 0;
-      font-family: Montserrat, system-ui, Arial, sans-serif;
-      background: radial-gradient(
-          ellipse at 10% 10%,
-          rgba(226, 184, 74, 0.02),
-          transparent 10%
-        ),
-        linear-gradient(180deg, #071017 0%, #07070a 40%),
-        var(--bg);
-      color: #e6eef6;
+      font-family: Montserrat, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+      background:
+        radial-gradient(circle at 0 0, #151017 0, transparent 55%),
+        radial-gradient(circle at 100% 100%, #0b121b 0, transparent 55%),
+        #05070a;
+      color: #e6ecf4;
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
-      overflow-x: hidden;
     }
 
-    /* Container */
     .wrap {
       max-width: var(--max-w);
       margin: 0 auto;
-      padding: 40px 20px;
+      padding: 32px 20px 72px; /* больше воздуха снизу */
     }
 
-    /* Header */
+    /* HEADER */
     header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
-      padding: 18px 0;
+      gap: 16px;
+      padding: 8px 0 24px;
     }
+
     .logo {
       display: flex;
       align-items: center;
-      gap: 12px;
+      gap: 10px;
     }
-    .logo .mark {
-      width: 48px;
-      height: 48px;
-      background: linear-gradient(135deg, var(--accent), #f5d88c);
-      border-radius: 8px;
+
+    .logo-mark {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, #f4d88c, var(--accent));
       display: grid;
       place-items: center;
+      color: #151515;
       font-weight: 900;
-      color: #0b0b0b;
-      box-shadow: 0 0 12px rgba(226, 184, 74, 0.6);
+      font-size: 16px;
+      box-shadow: 0 0 10px rgba(226,184,74,0.4);
     }
-    .logo h1 {
+
+    .logo-text h1 {
       margin: 0;
-      font-size: 20px;
-      font-weight: 700;
-      letter-spacing: 0.6px;
-      text-shadow: 0 0 10px rgba(226, 184, 74, 0.4);
+      font-size: 18px;
+      font-weight: 800;
+      letter-spacing: 0.04em;
     }
+
+    .logo-text small {
+      display: block;
+      margin-top: 2px;
+      font-size: 11px;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+    }
+
     nav {
       display: flex;
-      gap: 18px;
       align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      font-size: 13px;
     }
+
     nav a {
       color: var(--muted);
       text-decoration: none;
       font-weight: 600;
       position: relative;
-      transition: color 0.3s ease;
+      padding-bottom: 3px;
     }
+
     nav a::after {
       content: "";
       position: absolute;
-      bottom: -6px;
       left: 0;
-      width: 0%;
+      bottom: 0;
+      width: 0;
       height: 2px;
+      border-radius: 999px;
       background: var(--accent);
-      transition: width 0.3s ease;
-      border-radius: 2px;
+      transition: width 0.18s ease;
     }
+
     nav a:hover {
-      color: var(--accent);
+      color: #ffffff;
     }
+
     nav a:hover::after {
       width: 100%;
     }
 
     .btn {
-      padding: 10px 16px;
-      border-radius: 8px;
-      font-weight: 700;
-      cursor: pointer;
-      user-select: none;
-      transition: box-shadow 0.3s ease, transform 0.2s ease;
-      border: none;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-    }
-    .btn-ghost {
-      border: 1px solid rgba(255, 255, 255, 0.06);
-      background: transparent;
-      color: var(--muted);
-    }
-    .btn-ghost:hover {
-      color: var(--accent);
-      border-color: var(--accent);
-      box-shadow: 0 0 12px rgba(226, 184, 74, 0.7);
-      transform: translateY(-3px);
-    }
-    .btn-primary {
-      background: linear-gradient(90deg, var(--accent), #f6d78b);
-      color: #071017;
-      box-shadow: var(--glow);
-    }
-    .btn-primary:hover {
-      box-shadow: 0 0 25px rgba(226, 184, 74, 0.9);
-      transform: translateY(-4px);
+      padding: 8px 16px;
+      border-radius: 999px;
+      border: none;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      user-select: none;
+      text-decoration: none;
+      transition: background 0.18s, box-shadow 0.18s, transform 0.08s;
+      white-space: nowrap;
     }
 
-    /* Hero */
-    .hero {
-      min-height: 66vh;
-      display: grid;
-      grid-template-columns: 1fr 420px;
-      gap: 30px;
-      align-items: center;
-      padding: 40px 0;
+    .btn-primary {
+      background: linear-gradient(90deg, var(--accent), #f6d78b);
+      color: #151515;
+      box-shadow: 0 0 14px rgba(226,184,74,0.4);
     }
-    .hero-left {
-      padding-right: 10px;
+
+    .btn-primary:hover {
+      box-shadow: 0 0 18px rgba(226,184,74,0.7);
+      transform: translateY(-1px);
     }
-    .kicker {
-      color: var(--accent);
-      font-weight: 700;
-      letter-spacing: 1px;
-      margin-bottom: 14px;
-      text-shadow: 0 0 8px rgba(226, 184, 74, 0.3);
-    }
-    .title {
-      font-size: 48px;
-      margin: 0 0 14px;
-      line-height: 1.02;
-      font-weight: 900;
-      letter-spacing: -1px;
-      text-shadow: 0 0 20px rgba(226, 184, 74, 0.35);
-    }
-    .lead {
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.12);
       color: var(--muted);
-      max-width: 70%;
-      margin-bottom: 20px;
     }
+
+    .btn-ghost:hover {
+      background: rgba(255,255,255,0.05);
+      color: #ffffff;
+    }
+
+    /* HERO */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 1.45fr) minmax(0, 1fr);
+      gap: 32px;                 /* больше промежуток */
+      padding: 36px 0 40px;      /* больше вертикала */
+      align-items: stretch;
+    }
+
+    .hero-left {
+      padding-right: 6px;
+    }
+
+    .kicker {
+      font-size: 11px;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      margin-bottom: 10px;
+    }
+
+    .title {
+      margin: 0 0 14px;
+      font-size: 32px;
+      line-height: 1.22;
+      font-weight: 900;
+    }
+
+    .lead {
+      margin: 0 0 20px;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--muted);
+      max-width: 95%;
+    }
+
     .hero-ctas {
       display: flex;
       gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 18px;
     }
 
-    /* Right card */
-    aside .card {
-      background: linear-gradient(
-        180deg,
-        rgba(255, 255, 255, 0.02),
-        rgba(255, 255, 255, 0.01)
-      );
-      border-radius: 14px;
-      padding: 20px;
-      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.75);
-      border: 1px solid rgba(255, 255, 255, 0.04);
-      transition: box-shadow 0.3s ease, transform 0.25s ease;
-    }
-    aside .card:hover {
-      box-shadow: 0 12px 55px rgba(226, 184, 74, 0.7);
-      transform: translateY(-6px);
-    }
-    .server-info {
+    .hero-info-row {
       display: flex;
-      flex-direction: column;
+      flex-wrap: wrap;
       gap: 10px;
+      font-size: 12px;
     }
-    .server-info .row {
-      display: flex;
-      justify-content: space-between;
-    }
+
     .pill {
-      display: inline-block;
       padding: 6px 10px;
       border-radius: 999px;
-      background: rgba(226, 184, 74, 0.12);
-      color: var(--accent);
-      font-weight: 700;
-      user-select: none;
-      box-shadow: 0 0 12px rgba(226, 184, 74, 0.25);
-      transition: background 0.3s ease;
-    }
-    .pill:hover {
-      background: rgba(226, 184, 74, 0.22);
-    }
-
-    /* Features */
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 18px;
-      margin-top: 40px;
-    }
-    .feature {
-      background: var(--panel);
-      padding: 18px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, 0.02);
-      transition: transform 0.35s, box-shadow 0.35s;
-      cursor: default;
-    }
-    .feature:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.7);
-    }
-    .feature h3 {
-      margin: 0 0 8px;
-      font-size: 16px;
-    }
-    .feature p {
-      margin: 0;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: rgba(0,0,0,0.45);
       color: var(--muted);
-      font-size: 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
 
-    /* Sections styling */
-    section {
-      padding: 60px 0;
+    .pill strong {
+      color: #ffffff;
+      font-weight: 600;
     }
-    .section-head {
+
+    /* RIGHT STATUS CARD */
+    .hero-right {
+      background: var(--panel);
+      border-radius: 16px;
+      padding: 18px 18px 14px;
+      border: 1px solid rgba(255,255,255,0.06);
       display: flex;
-      align-items: center;
+      flex-direction: column;
       gap: 12px;
-      margin-bottom: 22px;
     }
+
+    .status-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .status-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .status-sub {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .status-chip {
+      padding: 6px 11px;
+      border-radius: 999px;
+      border: 1px solid rgba(226,184,74,0.7);
+      background: rgba(0,0,0,0.6);
+      font-size: 11px;
+      color: var(--accent);
+      white-space: nowrap;
+    }
+
+    .status-rows {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    .status-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .status-row span:last-child {
+      color: #ffffff;
+      font-weight: 600;
+    }
+
+    .status-footer {
+      margin-top: 10px;
+      font-size: 12px;
+      color: var(--muted);
+      border-top: 1px solid rgba(255,255,255,0.06);
+      padding-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* SECTIONS */
+    section {
+      padding: 40px 0;    /* больше расстояние между блоками */
+    }
+
+    .section-head {
+      margin-bottom: 18px;
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+
     .section-head h2 {
       margin: 0;
-      font-family: Oswald, Montserrat, Arial;
-      font-weight: 600;
-      letter-spacing: 1px;
-      text-shadow: 0 0 8px rgba(226, 184, 74, 0.3);
+      font-size: 20px;
+      font-weight: 800;
     }
-    .muted {
+
+    .section-head span {
+      font-size: 12px;
       color: var(--muted);
     }
 
-    /* Footer */
-    footer {
-      padding: 30px 0;
+    /* FEATURES */
+    .features {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .feature {
+      background: var(--panel-soft);
+      border-radius: 14px;
+      padding: 16px 16px 14px;
+      border: 1px solid rgba(255,255,255,0.04);
+      font-size: 13px;
+      line-height: 1.5;
       color: var(--muted);
-      border-top: 1px solid rgba(255, 255, 255, 0.02);
-      margin-top: 40px;
-      user-select: none;
+    }
+
+    .feature h3 {
+      margin: 0 0 8px;
       font-size: 14px;
-      letter-spacing: 0.3px;
+      font-weight: 700;
+      color: #ffffff;
     }
 
-    /* Misc */
-    .glass {
-      background: var(--glass);
-      backdrop-filter: blur(6px);
-      border-radius: 10px;
-      padding: 12px;
+    /* ABOUT / JOIN */
+    .card {
+      background: var(--panel-soft);
+      border-radius: 14px;
+      padding: 18px 18px 14px;
+      border: 1px solid rgba(255,255,255,0.04);
+      font-size: 13px;
+      line-height: 1.6;
+      color: var(--muted);
     }
 
-    /* Neon text */
-    .neon {
+    .two-cols {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 18px;
+    }
+
+    .card h3 {
+      margin: 0 0 8px;
+      font-size: 15px;
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .card p {
+      margin: 0 0 10px;
+      font-size: 13px;
+    }
+
+    .card p:last-child {
+      margin-bottom: 0;
+    }
+
+    /* FOOTER */
+    footer {
+      padding-top: 28px;
+      margin-top: 12px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+      font-size: 12px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    footer a {
       color: var(--accent);
-      text-shadow: 0 0 20px rgba(226, 184, 74, 0.14), 0 1px 0 rgba(255, 255, 255, 0.02);
-      user-select: none;
+      text-decoration: none;
     }
 
-    /* Responsive */
+    /* RESPONSIVE */
     @media (max-width: 980px) {
       .hero {
         grid-template-columns: 1fr;
+      }
+      .hero-right {
+        max-width: 420px;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .wrap {
+        padding: 20px 14px 64px;
+      }
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+      }
+      nav {
+        width: 100%;
+        justify-content: flex-start;
+      }
+      .title {
+        font-size: 24px;
       }
       .lead {
         max-width: 100%;
       }
       .features {
-        grid-template-columns: repeat(2, 1fr);
+        grid-template-columns: 1fr 1fr;
+      }
+      .two-cols {
+        grid-template-columns: 1fr;
+      }
+      .hero {
+        padding-top: 28px;
+        padding-bottom: 32px;
+        gap: 24px;
       }
     }
-    @media (max-width: 640px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-      nav {
-        order: 2;
-      }
+
+    @media (max-width: 520px) {
       .features {
         grid-template-columns: 1fr;
       }
-      .title {
-        font-size: 34px;
+      .hero-info-row {
+        flex-direction: column;
+        align-items: flex-start;
       }
-    }
-
-    /* Animated background lines */
-    .bg-lines {
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      opacity: 0.06;
-    }
-    .bg-lines svg {
-      width: 100%;
-      height: 100%;
-    }
-
-    /* Reveal animations */
-    .reveal {
-      opacity: 0;
-      transform: translateY(18px);
-      transition: all 0.7s cubic-bezier(0.2, 0.9, 0.25, 1);
-    }
-    .reveal.show {
-      opacity: 1;
-      transform: none;
+      .hero-right {
+        padding: 16px 14px 12px;
+      }
     }
   </style>
 </head>
 <body>
-  <!-- subtle SVG lines for vibe -->
-  <div class="bg-lines" aria-hidden>
-    <svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-      <defs></defs>
-      <g fill="none" stroke="rgba(226, 184, 74, 0.12)" stroke-width="1">
-        <path d="M0,20 L1000,0" />
-        <path d="M0,400 L1200,200" />
-      </g>
-    </svg>
-  </div>
-
   <div class="wrap">
     <header>
       <div class="logo">
-        <div class="mark">LPS</div>
-        <div>
+        <div class="logo-mark">L3</div>
+        <div class="logo-text">
           <h1>Lon3r</h1>
-          <div style="font-size:12px;color:var(--muted)">Private Server</div>
+          <small>private server</small>
         </div>
       </div>
 
       <nav>
         <a href="#about">О проекте</a>
-        <a href="#features">Фишки</a>
-        <a href="index2.html" class="btn btn-primary">Вход</a>
+        <a href="#features">Функции</a>
+        <a href="#join">Как начать</a>
+        <a href="index2.html" class="btn btn-primary">Личный кабинет</a>
       </nav>
     </header>
 
     <main>
+      <!-- HERO -->
       <section class="hero">
         <div class="hero-left">
-          <div class="kicker reveal">LON3R • PUBG MOBILE</div>
-          <h2 class="title reveal">
-            Заходи на проект — деньги, тачки, телки, админки хуинки.
+          <div class="kicker">PUBG MOBILE • PRIVATE SERVER</div>
+          <h2 class="title">
+            Приватный сервер для тех, кто хочет играть спокойно и без цирка.
           </h2>
-          <p class="lead reveal muted">
-            Lon3r Private Server — приватный сервер с уникальным контентом,
-            стабильной работой и активным комьюнити. Здесь ты получаешь максимум
-            фана, эксклюзивные фишки и честную игру без читаков..
+          <p class="lead">
+            Lon3r Private Server — закрытый сервер с ограниченным доступом,
+            адекватным онлайном и понятными правилами. Без рекламного мусора,
+            без случайных читеров и рандомных банов.
           </p>
-          <div class="hero-ctas reveal">
-            <button class="btn btn-primary">Подключиться</button>
-            <a href="#join" class="btn btn-ghost">Подробнее</a>
+
+          <div class="hero-ctas">
+            <a href="index2.html" class="btn btn-primary">Перейти в личный кабинет</a>
+            <a href="#join" class="btn btn-ghost">Как подключиться</a>
           </div>
 
-          <div
-            style="margin-top: 22px; display: flex; gap: 12px; flex-wrap: wrap"
-          >
-            <div class="glass pill reveal">
-              Онлайн: <strong style="margin-left: 8px; color: #fff"><span id="online-count"></span>
-            </strong>
+          <div class="hero-info-row">
+            <div class="pill">
+              Онлайн:
+              <strong><span id="online-count">—</span></strong>
             </div>
-            <div class="glass pill reveal">
-              Рейт: <strong style="margin-left: 8px; color: #fff">1.0x</strong>
+            <div class="pill">
+              Регион:
+              <strong>EU (Франкфурт)</strong>
             </div>
-            <div class="glass pill reveal">
-              Режим: <strong style="margin-left: 8px; color: #fff">Private</strong>
+            <div class="pill">
+              Формат:
+              <strong>Classic / Rooms</strong>
             </div>
           </div>
         </div>
 
-        <aside>
-          <div class="card reveal">
-            <div
-              style="
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 12px;
-              "
-            >
-              <div>
-                <div style="font-size: 13px; color: var(--muted)">ТГ Сервера</div>
-                <div style="font-weight: 900; font-size: 20px">
-                  Lon3r Private Server
-                </div>
-              </div>
-              <div style="text-align: right">
-                <div class="pill">LIVE</div>
-              </div>
+        <aside class="hero-right">
+          <div class="status-header">
+            <div>
+              <div class="status-title">Состояние сервера</div>
+              <div class="status-sub">Текущие показатели (ориентировочно).</div>
             </div>
+            <div class="status-chip" id="status-pill">ONLINE</div>
+          </div>
 
-            <div class="row">
-              <div class="muted">Последний рестарт</div>
-              <div><strong>Сегодня</strong></div>
+          <div class="status-rows">
+            <div class="status-row">
+              <span>Текущий онлайн</span>
+              <span><span id="online-count-panel">—</span> игроков</span>
             </div>
+            <div class="status-row">
+              <span>Последний рестарт</span>
+              <span id="restart-info">—</span>
+            </div>
+            <div class="status-row">
+              <span>Средний пинг (EU)</span>
+              <span>18–35 ms</span>
+            </div>
+            <div class="status-row">
+              <span>Тип доступа</span>
+              <span>По заявке через Telegram</span>
+            </div>
+          </div>
 
-            <div
-              style="margin-top: 14px; display: flex; gap: 8px; flex-wrap: wrap"
-            >
-              <button class="btn btn-primary" style="flex: 1">Online</button>
-              <a
-                href="https://t.me/+ONbveZ793EJiMzli"
-                class="btn btn-ghost"
-                >Telegram</a
-              >
-            </div>
+          <div class="status-footer">
+            Доступ к лаунчеру выдаётся через Telegram-бота.  
+            Все операции — заявка, оплата, получение логина и пароля — происходят в одном хабе, без сторонних сайтов.
           </div>
         </aside>
       </section>
 
+      <!-- FEATURES -->
       <section id="features">
         <div class="section-head">
-          <h2>Фишки проекта</h2>
-          <div class="muted">— то, чем мы гордимся</div>
+          <h2>Что ты получаешь</h2>
+          <span>основа сервера без лишнего маркетинга</span>
         </div>
 
         <div class="features">
-          <div class="feature reveal">
-            <h3 class="neon">Уникальный контент</h3>
-            <p>Уникальный контент и фишки, которых нет на оффе.</p>
+          <div class="feature">
+            <h3>Стабильный хостинг</h3>
+            <p>Выделенный сервер в Европе, аккуратные обновления и мониторинг. Цель — не мешать играть, а держать стабильный пинг и аптайм.</p>
           </div>
-          <div class="feature reveal">
-            <h3 class="neon">Онлайн</h3>
-            <p>Стабильный онлайн и отзывчивая администрация..</p>
+          <div class="feature">
+            <h3>Фильтр по людям</h3>
+            <p>Слоты ограничены. Доступ выдаётся точечно, чтобы не превращать сервер в обычный паблик с рандомной толпой.</p>
           </div>
-          <div class="feature reveal">
-            <h3 class="neon">Античит &amp; Стабильность</h3>
-            <p>
-              Сильная защита сервера и круглосуточный мониторинг — стабильный онлайн
-              без лагов.
-            </p>
+          <div class="feature">
+            <h3>Античит и модерация</h3>
+            <p>Многоуровневый античит, ручная проверка жалоб и быстрые баны, если кто-то ломает игру другим.</p>
           </div>
         </div>
       </section>
 
+      <!-- ABOUT -->
       <section id="about">
         <div class="section-head">
           <h2>О проекте</h2>
-          <div class="muted">— кратко и по делу</div>
+          <span>коротко и по делу</span>
         </div>
-        <div class="card reveal">
-          <p class="muted">
-            Lon3r Provate Server — приватный сервер, где играют по-настоящему.
-            Свежие фишки, мощный движ и честный геймплей без разводов. Заходи,
-            почувствуй уровень!
+
+        <div class="card">
+          <p>
+            Lon3r Private Server — закрытый проект для тех, кто хочет нормальный опыт в PUBG MOBILE,
+            а не хаос из рандомных игроков, читеров и бесконечного спама.
+          </p>
+          <p>
+            Мы не продаём «волшебные бусты» и не обещаем невозможное. 
+            Фокус только на трёх вещах: стабильный сервер, понятная модерация и простая схема доступа.
+          </p>
+          <p>
+            Доступ выдаётся через Telegram после заявки и оплаты. 
+            Детали по подключению, установке и обновлениям — в канале и в личном кабинете.
           </p>
         </div>
       </section>
 
+      <!-- JOIN -->
       <section id="join">
         <div class="section-head">
           <h2>Как подключиться</h2>
-          <div class="muted">— быстрый гайд</div>
+          <span>пошагово, без лишних слов</span>
         </div>
 
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 18px">
-          <div class="card reveal">
-            <h3>1. Канал</h3>
-            <p class="muted">Перейти в телеграм канал.</p>
-            <h3>2. Бот</h3>
-            <p class="muted">Найти в канале бота и зайти в него.</p>
-            <h3>3. Оплата</h3>
-            <p class="muted">Произвести оплату.</p>
-            </div>
-          <div class="card reveal">
-            <h3>4. Данные</h3>
-            <p class="muted">Получить логин и пароль.</p>
-            <h3>5. Профиль</h3>
-            <p class="muted">Перейти на сайт и войти в аккаунт.</p>
-            <h3>6. Установка</h3>
-            <p class="muted">Перейти в личный кабинет и начать установку сервера.</p>
+        <div class="two-cols">
+          <div class="card">
+            <h3>1. Telegram-канал</h3>
+            <p>Перейди в наш <a href="https://t.me/+ONbveZ793EJiMzli" style="color:var(--accent);text-decoration:none;">официальный Telegram-канал</a> и прочитай закреплённый пост.</p>
+
+            <h3>2. Бот-панель</h3>
+            <p>Через бота в канале подаётся заявка и оформляется оплата доступа к серверу.</p>
+
+            <h3>3. Получение данных</h3>
+            <p>После успешной оплаты бот выдаст логин и пароль от лаунчера и личного кабинета.</p>
+          </div>
+
+          <div class="card">
+            <h3>4. Вход в личный кабинет</h3>
+            <p>Зайди на сайт и авторизуйся через раздел «Личный кабинет» с выданными данными.</p>
+
+            <h3>5. Установка клиента</h3>
+            <p>В панели запускаешь установку — лаунчер скачивает и настраивает все нужные файлы.</p>
+
+            <h3>6. Игра на сервере</h3>
+            <p>После завершения следуешь инструкции в панели и подключаешься к Lon3r Private Server.</p>
           </div>
         </div>
       </section>
     </main>
 
     <footer>
-      <div
-        style="
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          gap: 12px;
-          flex-wrap: wrap;
-        "
-      >
-        <div class="muted">© 2025 Lon3r — Все права.</div>
-        <div style="display: flex; gap: 12px; align-items: center">
-          <a href="https://t.me/+ONbveZ793EJiMzli" class="muted">Telegram</a>
-        </div>
-      </div>
+      <span>© 2025 Lon3r Private Server. Не является официальным продуктом PUBG MOBILE.</span>
+      <span>Telegram: <a href="https://t.me/+ONbveZ793EJiMzli" target="_blank">@Lon3r</a></span>
     </footer>
   </div>
 
   <script>
-    
-    // Simple reveal on scroll
-    const obs = new IntersectionObserver((entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) {
-          e.target.classList.add("show");
-          // if you want one-time reveal, unobserve
-          obs.unobserve(e.target);
-        }
-      });
-    }, { threshold: 0.12 });
-
-    document.querySelectorAll(".reveal").forEach((n) => obs.observe(n));
-
-    // Smooth anchors
-    document.querySelectorAll('a[href^="#"]').forEach((a) => {
-      a.addEventListener("click", (e) => {
-        const href = a.getAttribute("href");
-        if (href.length > 1) {
+    // плавный скролл по якорям
+    document.querySelectorAll('a[href^="#"]').forEach((link) => {
+      link.addEventListener("click", (e) => {
+        const id = link.getAttribute("href");
+        if (id && id !== "#") {
           e.preventDefault();
-          document.querySelector(href).scrollIntoView({ behavior: "smooth", block: "start" });
+          const el = document.querySelector(id);
+          if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
         }
       });
     });
 
- // Минимальный и максимальный онлайн
-    const MIN_ONLINE = 358;
-    const MAX_ONLINE = 663;
+    // эмуляция онлайна
+    const MIN_ONLINE = 50;
+    const MAX_ONLINE = 160;
+    let online = parseInt(localStorage.getItem("loner_online"), 10);
 
-    // Получаем сохранённое значение
-    let online = parseInt(localStorage.getItem('fake_online'));
-
-    // Если нет сохранённого — генерим
-    if (!online) {
-        online = Math.floor(Math.random() * (MAX_ONLINE - MIN_ONLINE + 1)) + MIN_ONLINE;
-        localStorage.setItem('fake_online', online);
+    if (!online || isNaN(online)) {
+      online = Math.floor(Math.random() * (MAX_ONLINE - MIN_ONLINE + 1)) + MIN_ONLINE;
+      localStorage.setItem("loner_online", online);
     }
 
-    // Функция обновления числа на странице
-    function updateOnlineDisplay() {
-        document.getElementById('online-count').innerText = online;
+    function updateOnline() {
+      const main = document.getElementById("online-count");
+      const panel = document.getElementById("online-count-panel");
+      if (main) main.textContent = online + " игроков";
+      if (panel) panel.textContent = online;
     }
 
-    updateOnlineDisplay();
+    updateOnline();
 
-    // Каждые 5–15 секунд колебание онлайна
     setInterval(() => {
-        let change = Math.floor(Math.random() * 7) - 3; // от -3 до +3
-        online = Math.min(MAX_ONLINE, Math.max(MIN_ONLINE, online + change));
-        localStorage.setItem('fake_online', online);
-        updateOnlineDisplay();
-    }, Math.floor(Math.random() * 10000) + 5000); // 5–15 секунд
+      const diff = Math.floor(Math.random() * 5) - 2; // -2..+2
+      online = Math.max(MIN_ONLINE, Math.min(MAX_ONLINE, online + diff));
+      localStorage.setItem("loner_online", online);
+      updateOnline();
+    }, 10000 + Math.random() * 10000);
+
+    // "последний рестарт"
+    (function () {
+      const el = document.getElementById("restart-info");
+      if (!el) return;
+      const minutes = Math.floor(Math.random() * 50) + 5; // 5–55
+      if (minutes < 10) el.textContent = "менее 10 минут назад";
+      else if (minutes < 30) el.textContent = "около " + minutes + " мин назад";
+      else el.textContent = "примерно " + minutes + " мин назад";
+    })();
   </script>
 </body>
 </html>
